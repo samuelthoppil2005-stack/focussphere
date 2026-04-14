@@ -3,7 +3,5 @@ djangorestframework==3.16.1
 gunicorn==25.1.0
 psycopg2-binary==2.9.11
 groq==1.1.1
-pandas==2.2.2
-numpy
 requests
 whitenoise==6.12.0
