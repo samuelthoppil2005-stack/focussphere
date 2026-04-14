@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+<h2 class="text-white">Study Materials</h2>
+
+<a href="{% url 'upload_file' %}" class="btn btn-primary">
+➕ Upload Material
+</a>
+
+</div>
+
+
+<input
+type="text"
+placeholder="Search materials..."
+class="form-control mb-4">
+
+
+<div class="row">
+
+{% for file in files %}
+
+<div class="col-md-4 mb-3">
+
+<div class="card shadow bg-dark text-white h-100">
+
+<div class="card-body">
+
+<h5>{{ file.title }}</h5>
+
+<p class="text-info">{{ file.subject }}</p>
+
+<p class="text-muted">
+Uploaded {{ file.uploaded_at|date:"M d, Y" }}
+</p>
+
+<a href="{{ file.file.url }}" class="btn btn-sm btn-outline-primary">
+View
+</a>
+
+<a href="{{ file.file.url }}" download class="btn btn-sm btn-success">
+Download
+</a>
+
+<a href="{% url 'delete_file' file.id %}" class="btn btn-sm btn-danger">
+Delete
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p class="text-white">No study materials uploaded yet.</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

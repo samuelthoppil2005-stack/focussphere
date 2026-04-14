@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card p-4 shadow">
+
+<h3 class="text-white mb-3">Add Timetable Period</h3>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<select name="day" class="form-control mb-3">
+
+<option>MON</option>
+<option>TUE</option>
+<option>WED</option>
+<option>THU</option>
+<option>FRI</option>
+<option>SAT</option>
+
+</select>
+
+<input type="text" name="subject" placeholder="Subject" class="form-control mb-3">
+
+<input type="time" name="start_time" class="form-control mb-3">
+
+<input type="time" name="end_time" class="form-control mb-3">
+
+<input type="text" name="room" placeholder="Room" class="form-control mb-3">
+
+<button class="btn btn-primary">Save Period</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}

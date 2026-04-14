@@ -1,0 +1,92 @@
+<{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - FocusSphere</title>
+
+    <style>
+        body {
+            background: #0f172a;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        .login-box {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #3b82f6;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        button:hover {
+            background: #2563eb;
+        }
+        
+
+        .brand {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="brand">FocusSphere</div>
+
+    <h2>Login</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+
+        {{ form.password.label_tag }}
+        {{ form.password }}
+
+        <button type="submit">Login</button>
+    </form>
+    
+    <p style="margin-top:10px;">
+Don't have an account?
+<a href="/accounts/signup/">Sign Up</a>
+</p>
+
+</div>
+
+</body>
+</html>

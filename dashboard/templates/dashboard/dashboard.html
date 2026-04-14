@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row g-4">
+
+<!-- Today's Classes -->
+<div class="col-md-6">
+<div class="card dashboard-card p-3">
+
+<h5>📚 Today's Classes</h5>
+
+{% if classes_today %}
+<ul>
+{% for c in classes_today %}
+<li>{{ c.subject }} ({{ c.start_time }})</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No classes today</p>
+{% endif %}
+
+</div>
+</div>
+
+
+<!-- Assignments -->
+<div class="col-md-6">
+<div class="card dashboard-card p-3">
+
+<h5>📋 Pending Assignments</h5>
+
+{% if assignments %}
+<ul>
+{% for a in assignments %}
+<li>{{ a.title }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No assignments</p>
+{% endif %}
+
+</div>
+</div>
+
+
+<!-- Tasks -->
+<div class="col-md-6">
+<div class="card dashboard-card p-3">
+
+<h5>✅ Tasks</h5>
+
+{% if tasks %}
+<ul>
+{% for t in tasks %}
+<li>{{ t.title }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No tasks</p>
+{% endif %}
+
+</div>
+</div>
+
+
+<!-- Exams -->
+<div class="col-md-6">
+<div class="card dashboard-card p-3">
+
+<h5>⏳ Upcoming Exams</h5>
+
+{% if exams %}
+<ul>
+{% for e in exams %}
+<li>{{ e.title }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No exams</p>
+{% endif %}
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

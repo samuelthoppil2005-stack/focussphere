@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+<h2 class="text-white">Attendance Tracker</h2>
+
+<a href="{% url 'add_attendance' %}" class="btn btn-primary">
+➕ Add Subject
+</a>
+
+</div>
+
+<!-- Attendance Table -->
+<div class="card shadow p-3">
+
+<table class="table table-hover">
+
+<thead style="background:#111827;color:white">
+
+<tr>
+<th>Subject</th>
+<th>Total Classes</th>
+<th>Attended</th>
+<th>Percentage</th>
+<th>Actions</th>
+<th>Needed for 75%</th>
+</tr>
+
+</thead>
+<td>
+
+{% if a.percentage >= 75 %}
+
+<span class="text-success fw-bold">
+✔ Safe
+</span>
+
+{% else %}
+
+<span class="text-danger fw-bold">
+Attend {{ a.needed_for_75 }} more classes
+</span>
+
+{% endif %}
+
+</td>
+<tbody>
+
+{% for a in attendance %}
+
+<tr>
+
+<td>{{ a.subject }}</td>
+
+<td>{{ a.total_classes }}</td>
+
+<td>{{ a.attended_classes }}</td>
+
+<td>
+
+{% if a.percentage >= 75 %}
+
+<span class="badge bg-success">
+{{ a.percentage }}%
+</span>
+
+{% else %}
+
+<span class="badge bg-danger">
+{{ a.percentage }}%
+</span>
+
+{% endif %}
+
+</td>
+
+<td class="text-end">
+
+<a href="{% url 'edit_attendance' a.id %}" class="btn btn-warning btn-sm">
+✏ Edit
+</a>
+
+<a href="{% url 'delete_attendance' a.id %}" class="btn btn-danger btn-sm">
+🗑 Delete
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="5" class="text-center text-muted">
+No attendance data yet
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- Attendance Chart -->
+<div class="card shadow p-3 mt-4">
+
+<h5 class="text-white mb-3">Attendance Analytics</h5>
+
+<!-- Overall Attendance -->
+<div class="mb-4">
+
+<h4 class="text-white">Overall Attendance</h4>
+
+{% if overall_percentage >= 75 %}
+
+<div class="alert alert-success">
+<strong>{{ overall_percentage }}%</strong> ✔ Safe Attendance
+</div>
+
+{% else %}
+
+<div class="alert alert-danger">
+<strong>{{ overall_percentage }}%</strong> ⚠ Below Required (75%)
+</div>
+
+{% endif %}
+
+</div>
+
+<!-- Chart -->
+<canvas id="attendanceChart"></canvas>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+<script>
+
+const subjects = [
+{% for a in attendance %}
+"{{ a.subject }}",
+{% endfor %}
+];
+
+const percentages = [
+{% for a in attendance %}
+{{ a.percentage }},
+{% endfor %}
+];
+
+const colors = [
+{% for a in attendance %}
+{% if a.percentage >= 75 %}
+"green",
+{% else %}
+"red",
+{% endif %}
+{% endfor %}
+];
+
+const data = {
+labels: subjects,
+datasets: [{
+label: "Attendance %",
+data: percentages,
+backgroundColor: colors
+}]
+};
+
+const config = {
+type: 'bar',
+data: data
+};
+
+new Chart(
+document.getElementById('attendanceChart'),
+config
+);
+
+</script>
+
+const config = {
+type: 'bar',
+data: data
+};
+
+new Chart(
+document.getElementById('attendanceChart'),
+config
+);
+
+</script>
+
+{% endblock %}

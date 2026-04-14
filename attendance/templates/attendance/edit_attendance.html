@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card p-4 shadow">
+
+<h3 class="text-white mb-3">Edit Attendance</h3>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="mb-3">
+<label class="form-label">Subject</label>
+<input type="text"
+name="subject"
+value="{{ attendance.subject }}"
+class="form-control">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Total Classes</label>
+<input type="number"
+name="total_classes"
+value="{{ attendance.total_classes }}"
+class="form-control">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Attended Classes</label>
+<input type="number"
+name="attended_classes"
+value="{{ attendance.attended_classes }}"
+class="form-control">
+</div>
+
+<button class="btn btn-primary">
+Update Attendance
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}

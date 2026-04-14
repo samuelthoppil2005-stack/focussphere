@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+}
+
+.chat-wrapper{
+max-width:900px;
+margin:auto;
+height:80vh;
+display:flex;
+flex-direction:column;
+}
+
+.chat-box{
+flex:1;
+overflow-y:auto;
+padding:20px;
+}
+
+.message{
+padding:12px 16px;
+border-radius:12px;
+margin:10px 0;
+max-width:70%;
+line-height:1.4;
+}
+
+.user{
+background:#2563eb;
+margin-left:auto;
+}
+
+.ai{
+background:#1e293b;
+}
+
+.input-container{
+display:flex;
+align-items:center;
+gap:10px;
+background:#1e293b;
+padding:12px;
+border-radius:30px;
+}
+
+.upload-btn{
+background:none;
+border:none;
+font-size:22px;
+color:white;
+cursor:pointer;
+}
+
+.chat-input{
+flex:1;
+background:none;
+border:none;
+outline:none;
+color:white;
+font-size:16px;
+}
+
+.send-btn{
+background:#2563eb;
+border:none;
+padding:8px 16px;
+border-radius:20px;
+color:white;
+cursor:pointer;
+}
+
+.send-btn:hover{
+background:#1d4ed8;
+}
+
+.ai{
+background:#1e293b;
+line-height:1.7;
+font-size:15px;
+padding:14px;
+white-space:normal;
+}
+
+.ai b{
+color:#60a5fa;
+}
+</style>
+
+<div class="chat-wrapper">
+
+<div id="chatbox" class="chat-box"></div>
+
+<div class="input-container">
+
+<button class="upload-btn" onclick="document.getElementById('fileInput').click()">+</button>
+
+<input type="file" id="fileInput" hidden>
+
+<input
+id="message"
+class="chat-input"
+placeholder="Ask anything..."
+onkeypress="enterSend(event)"
+>
+
+<button class="send-btn" onclick="sendMessage()">Send</button>
+
+</div>
+
+</div>
+<div id="fileName" style="font-size:12px;color:#9ca3af;margin-top:5px;"></div>
+
+<script>
+
+function formatAIResponse(text){
+
+// bold
+text = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+
+// numbered steps
+text = text.replace(/\n(\d+)\.\s/g, "<br><br><b>$1.</b> ")
+
+// bullet points
+text = text.replace(/\n-\s/g, "<br>• ")
+
+// line breaks
+text = text.replace(/\n/g,"<br>")
+
+return text
+
+}
+
+async function sendMessage(){
+
+let msg = document.getElementById("message").value
+let file = document.getElementById("fileInput").files[0]
+let chat = document.getElementById("chatbox")
+
+if(!msg && !file){
+return
+}
+
+if(msg){
+chat.innerHTML += `<div class="message user">${msg}</div>`
+}
+
+let formData = new FormData()
+
+formData.append("message", msg)
+
+if(file){
+formData.append("file", file)
+}
+
+chat.innerHTML += `<div class="message ai" id="typing">AI is thinking...</div>`
+
+try{
+
+let response = await fetch("/ai/chat/",{
+method:"POST",
+body:formData
+})
+
+let data = await response.json()
+
+document.getElementById("typing").remove()
+
+let formatted = formatAIResponse(data.reply)
+
+let aiMessage = document.createElement("div")
+aiMessage.className = "message ai"
+chat.appendChild(aiMessage)
+
+typeText(aiMessage, formatted)
+
+chat.scrollTop = chat.scrollHeight
+
+}catch(err){
+
+document.getElementById("typing").remove()
+
+chat.innerHTML += `<div class="message ai">⚠️ Error contacting AI</div>`
+
+}
+
+document.getElementById("message").value=""
+document.getElementById("fileInput").value=""
+
+}
+
+function enterSend(event){
+if(event.key === "Enter"){
+sendMessage()
+}
+}
+
+document.getElementById("fileInput").addEventListener("change", function(){
+
+let file = this.files[0]
+
+if(file){
+document.getElementById("fileName").innerText = "📎 " + file.name
+}
+
+})
+
+function typeText(element, text){
+
+let i = 0
+let speed = 8
+
+function typing(){
+
+if(i < text.length){
+
+// append characters normally
+element.innerHTML = text.substring(0, i)
+
+i++
+
+setTimeout(typing, speed)
+
+}
+
+}
+
+typing()
+
+}   
+
+</script>
+
+{% endblock %}

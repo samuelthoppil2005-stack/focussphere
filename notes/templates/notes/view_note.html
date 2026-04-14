@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow p-4 bg-dark text-white">
+
+<h2 class="text-white">{{ note.title }}</h2>
+
+<p class="text-info">{{ note.subject }}</p>
+
+<hr style="border-color:#555">
+
+<p class="text-light" style="white-space: pre-line;">
+{{ note.content }}
+</p>
+
+<div class="mt-3">
+
+<a href="{% url 'edit_note' note.id %}" class="btn btn-warning">
+Edit
+</a>
+
+<a href="{% url 'delete_note' note.id %}" class="btn btn-danger">
+Delete
+</a>
+
+</div>
+
+</div>
+
+{% endblock %}

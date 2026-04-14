@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card p-4 shadow">
+
+<h3 class="text-white mb-3">Edit Exam</h3>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input type="text"
+name="subject"
+value="{{ exam.subject }}"
+class="form-control mb-3">
+
+<input type="text"
+name="exam_name"
+value="{{ exam.exam_name }}"
+class="form-control mb-3">
+
+<input type="date"
+name="exam_date"
+value="{{ exam.exam_date }}"
+class="form-control mb-3">
+
+<button class="btn btn-primary">
+Update Exam
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}
